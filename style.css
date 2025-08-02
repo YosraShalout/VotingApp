@@ -1,0 +1,350 @@
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --danger-color: #f72585;
+    --success-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    color: var(--dark-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* منع التمرير الأفقي للصفحة ككل */
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+}
+
+.app-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.header-content h1 {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.app-main {
+    flex: 1;
+    padding: 1rem;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden; /* منع التمرير الداخلي */
+}
+
+.control-panel {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    font-weight: 500;
+    color: var(--dark-color);
+    font-size: 0.9rem;
+}
+
+.stats span span {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.input-group input {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    min-width: 0;
+}
+
+.input-group input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #d1145b;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.export {
+    background-color: #2a9d8f;
+}
+
+.export:hover {
+    background-color: #228176;
+}
+
+.reset {
+    background-color: #e63946;
+}
+
+.reset:hover {
+    background-color: #c1121f;
+}
+
+.cards-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    width: 100%;
+    justify-items: center;
+}
+
+.candidate-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    max-width: 150px;
+    min-height: 200px;
+}
+
+.candidate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.serial-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.3rem 0;
+    color: white;
+    background-color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vote-count {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin: 0.3rem 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.vote-count::before {
+    content: 'الأصوات:';
+    display: block;
+    font-size: 0.7rem;
+    font-weight: normal;
+    color: #6c757d;
+}
+
+.candidate-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+    color: var(--dark-color);
+    text-align: center;
+    word-break: break-word;
+    width: 100%;
+}
+
+.card-actions {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    margin-top: auto;
+}
+
+.card-actions button {
+    flex: 1;
+    justify-content: center;
+    padding: 0.4rem;
+    font-size: 0.7rem;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: white;
+    margin-top: 1.5rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+/* تعديلات للشاشات الكبيرة جداً */
+@media (min-width: 2000px) {
+    .cards-grid {
+        grid-template-columns: repeat(10, minmax(120px, 1fr));
+    }
+}
+
+@media (min-width: 1600px) and (max-width: 1999px) {
+    .cards-grid {
+        grid-template-columns: repeat(8, minmax(120px, 1fr));
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+    .cards-grid {
+        grid-template-columns: repeat(6, minmax(120px, 1fr));
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+    .cards-grid {
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+    }
+}
+
+@media (min-width: 700px) and (max-width: 899px) {
+    .cards-grid {
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+    }
+}
+
+@media (min-width: 500px) and (max-width: 699px) {
+    .cards-grid {
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 499px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .candidate-card {
+        max-width: 100%;
+    }
+}
