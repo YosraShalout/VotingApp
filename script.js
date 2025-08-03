@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadDataBtn = document.getElementById('loadData');
     const exportExcelBtn = document.getElementById('exportExcel');
     const resetAllBtn = document.getElementById('resetAll');
+    const helpBtn = document.getElementById('helpBtn');
     const totalCandidatesSpan = document.getElementById('totalCandidates');
     const totalVotesSpan = document.getElementById('totalVotes');
+    const helpModal = document.getElementById('helpModal');
+    const closeModal = document.querySelector('.close-modal');
 
     // Candidates data
     let candidates = JSON.parse(localStorage.getItem('votingAppCandidates')) || [];
@@ -90,11 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderCandidates();
                 candidateNameInput.value = '';
                 candidateNameInput.focus();
+                showAlert('تم إضافة المرشح بنجاح', 'success');
             } else {
-                alert('هذا المرشح موجود بالفعل!');
+                showAlert('هذا المرشح موجود بالفعل!', 'warning');
             }
         } else {
-            alert('الرجاء إدخال اسم المرشح');
+            showAlert('الرجاء إدخال اسم المرشح', 'error');
         }
     }
 
@@ -103,23 +107,31 @@ document.addEventListener('DOMContentLoaded', function() {
         candidates[index].votes++;
         saveToLocalStorage();
         renderCandidates();
+        showAlert(`تم إضافة صوت للمرشح ${candidates[index].name}`, 'success');
     }
 
     // Remove a vote from a candidate
     function removeVote(index) {
         if (candidates[index].votes > 0) {
-            candidates[index].votes--;
-            saveToLocalStorage();
-            renderCandidates();
+            if (confirm(`هل تريد حذف صوت من المرشح ${candidates[index].name}؟`)) {
+                candidates[index].votes--;
+                saveToLocalStorage();
+                renderCandidates();
+                showAlert(`تم حذف صوت من المرشح ${candidates[index].name}`, 'success');
+            }
+        } else {
+            showAlert('لا يوجد أصوات لحذفها', 'warning');
         }
     }
 
     // Remove a candidate
     function removeCandidate(index) {
-        if (confirm('هل أنت متأكد من حذف هذا المرشح؟')) {
+        if (confirm(`هل أنت متأكد من حذف المرشح ${candidates[index].name}؟ سيتم حذف جميع أصواته أيضًا.`)) {
+            const removedCandidate = candidates[index].name;
             candidates.splice(index, 1);
             saveToLocalStorage();
             renderCandidates();
+            showAlert(`تم حذف المرشح ${removedCandidate}`, 'success');
         }
     }
 
@@ -129,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
             candidates = [];
             localStorage.removeItem('votingAppCandidates');
             renderCandidates();
+            showAlert('تم مسح جميع البيانات بنجاح', 'success');
         }
     }
 
@@ -145,19 +158,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Export to Excel
     function exportToExcel() {
-        // Prepare data
-        const data = [
-            ['#', 'اسم المرشح', 'عدد الأصوات'], // Header row
-            ...candidates.map((c, index) => [index + 1, c.name, c.votes])
-        ];
+        try {
+            // Prepare data
+            const data = [
+                ['#', 'اسم المرشح', 'عدد الأصوات'], // Header row
+                ...candidates.map((c, index) => [index + 1, c.name, c.votes])
+            ];
 
-        // Create workbook
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, "نتائج التصويت");
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, "نتائج التصويت");
 
-        // Export
-        XLSX.writeFile(wb, "نتائج_التصويت.xlsx");
+            // Export
+            XLSX.writeFile(wb, "نتائج_التصويت.xlsx");
+            showAlert('تم تصدير البيانات إلى Excel بنجاح', 'success');
+        } catch (error) {
+            showAlert('حدث خطأ أثناء التصدير: ' + error.message, 'error');
+        }
     }
 
     // Save data to JSON file
@@ -173,6 +191,8 @@ document.addEventListener('DOMContentLoaded', function() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        
+        showAlert('تم حفظ البيانات في ملف JSON بنجاح', 'success');
     }
 
     // Load data from JSON file
@@ -183,6 +203,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         input.onchange = e => {
             const file = e.target.files[0];
+            
+            // Check file size (max 1MB)
+            if (file.size > 1024 * 1024) {
+                showAlert('حجم الملف كبير جداً (الحد الأقصى 1MB)', 'error');
+                return;
+            }
+            
             const reader = new FileReader();
             
             reader.onload = event => {
@@ -192,11 +219,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         candidates = data;
                         saveToLocalStorage();
                         renderCandidates();
+                        showAlert('تم تحميل البيانات بنجاح', 'success');
                     } else {
-                        alert('ملف غير صالح. يجب أن يحتوي على مصفوفة من المرشحين.');
+                        showAlert('ملف غير صالح. يجب أن يحتوي على مصفوفة من المرشحين.', 'error');
                     }
                 } catch (error) {
-                    alert('خطأ في قراءة الملف: ' + error.message);
+                    showAlert('خطأ في قراءة الملف: ' + error.message, 'error');
                 }
             };
             
@@ -204,6 +232,27 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         input.click();
+    }
+
+    // Show alert message
+    function showAlert(message, type = 'info') {
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        document.body.appendChild(alert);
+        
+        setTimeout(() => {
+            alert.remove();
+        }, 3000);
+    }
+
+    // Help modal functions
+    function openHelpModal() {
+        helpModal.style.display = 'block';
+    }
+
+    function closeHelpModal() {
+        helpModal.style.display = 'none';
     }
 
     // Event listeners
@@ -219,6 +268,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadDataBtn.addEventListener('click', loadDataFromFile);
     exportExcelBtn.addEventListener('click', exportToExcel);
     resetAllBtn.addEventListener('click', resetAll);
+    helpBtn.addEventListener('click', openHelpModal);
+    closeModal.addEventListener('click', closeHelpModal);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target === helpModal) {
+            closeHelpModal();
+        }
+    });
 
     // Initialize the app
     initApp();
