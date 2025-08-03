@@ -13,6 +13,9 @@
             <div class="header-content">
                 <h1><i class="fas fa-vote-yea"></i> برنامج فرز الأصوات - المستشارة يـســـرا شـلتوت</h1>
                 <div class="header-actions">
+                    <button id="helpBtn" class="btn-icon help">
+                        <i class="fas fa-question-circle"></i> مساعدة
+                    </button>
                     <button id="resetAll" class="btn-icon reset">
                         <i class="fas fa-trash-alt"></i> مسح الكل
                     </button>
@@ -23,7 +26,7 @@
                         <i class="fas fa-folder-open"></i> فتح
                     </button>
                     <button id="exportExcel" class="btn-icon export">
-                        <i class="fas fa-file-excel"></i> تصدير
+                        <i class="fas fa-file-excel"></i> النتيجة Exel
                     </button>
                 </div>
             </div>
@@ -49,6 +52,38 @@
         <footer class="app-footer">
             <p>© 2025 برنامج فرز الأصوات | Yosra Shaltout</p>
         </footer>
+    </div>
+
+    <!-- نافذة المساعدة -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-question-circle"></i> طريقة استخدام البرنامج</h2>
+            <div class="help-content">
+                <p>برنامج سهل وسريع لفرز الأصوات الصحيحة والحصول على نتائج الفرز بضغطة واحدة..</p>
+                <p>يمكن ادخال حوالي 100 صوت في الدقيقة ..</p>
+                
+                <h3>⬅ طريقة استخدام البرنامج:</h3>
+                <ol>
+                    <li>ادخال اسم كل مرشح مرة واحدة من خلال كتابة اسم المرشح وضغط Enter</li>
+                    <li>سيظهر عدد كروت = عدد المرشحين...</li>
+                    <li>كل كارت مدون عليه رقم المرشح داخل دائرة زرقاء واسم المرشح وعدد الأصوات</li>
+                    <li>عند الضغط على الكارت بالماوس يحصل هذا المرشح على صوت <strong>(يفضل الضغط على الدائرة المدون بها رقم المرشح)</strong></li>
+                    <li>كل ضغطة = صوت ويتم تجميع الأصوات تلقائيا لكل مرشح داخل الكارت المخصص له</li>
+                    <li>يظهر بالأعلى مجموع الأصوات التي تم إدخالها لجميع المرشحين</li>
+                    <li>يمكن حذف الصوت اذا تم ادخاله عن طريق الخطأ من خلال الضغط على المربع الاحمر المدون عليه ازالة داخل الكارت الخاص بالمرشح</li>
+                    <li>يمكن حذف كارت المرشح بالكامل من خلال الضغط على المربع الازرق المدون عليه حذف</li>
+                    <li>عند الانتهاء يتم الضغط على المستطيل الاخضر أعلى يسار الشاشة فتظهر نتائج جميع المرشحين بجدول Excel</li>
+                </ol>
+                
+                <h3>نصائح مهمة:</h3>
+                <ul>
+                    <li>يفضل استخدام ماوس عادية أو تاتش الشاشة اذا متوفر بها هذه الخاصية</li>
+                    <li>يمكن تصغير او تكبير الشاشة بالطريقة العادية لكي تظهر جميع كروت المرشحين في واجهة واحدة لسهولة وسرعة الفرز</li>
+                    <li>جميع وسائل الفرز تتطلب التركيز والدقة</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
